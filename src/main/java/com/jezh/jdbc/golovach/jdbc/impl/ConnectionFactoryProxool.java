@@ -1,5 +1,6 @@
-package com.jezh.jdbc.golovach.util;
+package com.jezh.jdbc.golovach.jdbc.impl;
 
+import com.jezh.jdbc.golovach.jdbc.ConnectionFactory;
 import org.logicalcobwebs.proxool.ProxoolException;
 import org.logicalcobwebs.proxool.ProxoolFacade;
 
@@ -9,12 +10,11 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import static com.jezh.jdbc.golovach.config.GolovachConfig.*;
-import static com.jezh.jdbc.golovach.daoImpl.JdbcClassicProbe.*;
 
-public class UserDaoJdbcProxool {
+public class ConnectionFactoryProxool implements ConnectionFactory {
 
-    static {
-//        поскольку proxool - это драйвер, регистрируем его:
+    public ConnectionFactoryProxool() throws SQLException {
+        //        поскольку proxool - это драйвер, регистрируем его:
         try {
             Class.forName("org.logicalcobwebs.proxool.ProxoolDriver");
         } catch (ClassNotFoundException e) {
@@ -35,7 +35,14 @@ public class UserDaoJdbcProxool {
             throw new RuntimeException("Some error configuring proxool", e);
         }
     }
-    public Connection getConnection() throws SQLException {
+
+    @Override
+    public Connection newConnection() throws SQLException {
         return DriverManager.getConnection("proxool.production");
+    }
+
+    @Override
+    public void close() throws SQLException {
+        ProxoolFacade.shutdown();
     }
 }

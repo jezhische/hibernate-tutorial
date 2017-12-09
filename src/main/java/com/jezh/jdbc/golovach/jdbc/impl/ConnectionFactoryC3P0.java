@@ -1,19 +1,20 @@
-package com.jezh.jdbc.golovach.util;
+package com.jezh.jdbc.golovach.jdbc.impl;
 
+import com.jezh.jdbc.golovach.jdbc.ConnectionFactory;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 import javax.sql.DataSource;
-
 import java.beans.PropertyVetoException;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import static com.jezh.jdbc.golovach.config.GolovachConfig.*;
-import static com.jezh.jdbc.golovach.daoImpl.JdbcClassicProbe.*;
 
-public class UserDaoJdbcC3P0 {
+public class ConnectionFactoryC3P0 implements ConnectionFactory {
 
-//    DataSource - это proxy для DriverManager, factory для connection
-    private final DataSource dataSource;
-    {
+    private DataSource dataSource;
+
+    public ConnectionFactoryC3P0() throws SQLException {
         ComboPooledDataSource cpds = new ComboPooledDataSource();
         try {
             cpds.setDriverClass(DRIVER_CLASS_NAME);
@@ -29,12 +30,17 @@ public class UserDaoJdbcC3P0 {
 
             dataSource = cpds;
         } catch (PropertyVetoException e) {
-            throw new RuntimeException("Exception during configuring c3p0", e); // todo: почему пробрасывание этого
-            // exception приводит к тому, что final переменная dataSource засчитывается инициализированной???
+            throw new RuntimeException("Exception during configuring c3p0", e);
         }
     }
 
-    public DataSource getDataSource() {
-        return dataSource;
+    @Override
+    public Connection newConnection() throws SQLException {
+        return dataSource.getConnection();
+    }
+
+    @Override
+    public void close() throws SQLException {
+        ((ComboPooledDataSource)dataSource).close();
     }
 }

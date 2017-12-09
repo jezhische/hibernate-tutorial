@@ -1,6 +1,8 @@
 package com.jezh.jdbc.golovach.daoImpl;
 
+import com.jezh.jdbc.golovach.dao.ConnectionFactoryFactory;
 import com.jezh.jdbc.golovach.dao.StudentDao;
+import com.jezh.jdbc.golovach.jdbc.ConnectionFactory;
 import com.jezh.jdbc.golovach.util.JdbcUtils;
 import com.jezh.jdbc.golovach.util.UserDaoJdbcC3P0;
 
@@ -10,22 +12,31 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.jezh.jdbc.golovach.config.GolovachConfig.DRIVER_CLASS_NAME;
+
 public class JdbcClassicProbe implements StudentDao {
 
-    public static final String DRIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
-    public static final String JDBC_URL = "jdbc:mysql://localhost:3060/hb_student_tracker?useSSL=false";
-    public static final String USER = "hbstudent";
-    public static final String PASSWORD = "hbstudent";
+    private static final String SELECT_ALL_SQL = "select * from student";
 
-    public static final String SELECT_ALL_SQL = "select * from student";
+    private ConnectionFactory connectionFactory;
 
-    //    DataSource - это proxy для DriverManager, factory для connection
-    DataSource dataSource = new UserDaoJdbcC3P0().getDataSource(); // один из вариантов ConnectionPool
-//    UserDaoJdbcProxool udjProxool = new UserDaoJdbcProxool(); // еще вариант ConnectionPool
+//    //    DataSource - это proxy для DriverManager, factory для connection
+//    private DataSource dataSource = new UserDaoJdbcC3P0().getDataSource(); // один из вариантов ConnectionPool
+////    private UserDaoJdbcProxool udjProxool = new UserDaoJdbcProxool(); // еще вариант ConnectionPool
 
     static {
         JdbcUtils.initDriver(DRIVER_CLASS_NAME);
     }
+
+    public JdbcClassicProbe() {
+    }
+
+    public JdbcClassicProbe(ConnectionFactoryFactory.FactoryType factoryType) {
+        ConnectionFactoryFactory.setType(factoryType);
+        connectionFactory = ConnectionFactoryFactory.newConnectionFactory();
+    }
+
+
 
     @Override
     public List<String> getTableFields() {
@@ -34,7 +45,8 @@ public class JdbcClassicProbe implements StudentDao {
         ResultSet resultSet = null;
         List<String> list = new ArrayList<>();
         try {
-            connection = dataSource.getConnection();
+            connection = connectionFactory.newConnection();
+//            connection = dataSource.getConnection();
 //            connection = udjProxool.getConnection();
 //            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
             connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
@@ -89,9 +101,8 @@ public class JdbcClassicProbe implements StudentDao {
     }
 
     public static void main(String[] args) {
-//        System.out.println(new JdbcClassicProbe().getTableFields());
 
-        JdbcClassicProbe test = new JdbcClassicProbe();
+        JdbcClassicProbe test = new JdbcClassicProbe(ConnectionFactoryFactory.FactoryType.DBCP);
         test.avgTime(100);
     }
 }
