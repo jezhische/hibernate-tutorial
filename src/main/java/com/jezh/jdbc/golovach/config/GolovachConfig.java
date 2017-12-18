@@ -19,8 +19,8 @@ public class GolovachConfig {
             e.printStackTrace();
         }
         DRIVER_CLASS_NAME = props.getProperty("driver_mysql");
-        JDBC_URL = props.getProperty("url_hb_student_tracker");
-        USER = props.getProperty("student_login");
-        PASSWORD = props.getProperty("student_password");
+        JDBC_URL = props.getProperty("url_golovach");
+        USER = props.getProperty("user_login");
+        PASSWORD = props.getProperty("user_password");
     }
 }

@@ -7,7 +7,6 @@ import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
 
 import static com.jezh.jdbc.golovach.config.GolovachConfig.*;
-import static com.jezh.jdbc.golovach.daoImpl.JdbcClassicProbe.*;
 
 public class UserDaoJdbcC3P0 {
 

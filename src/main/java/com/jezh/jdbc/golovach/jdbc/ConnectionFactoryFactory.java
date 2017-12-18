@@ -1,4 +1,4 @@
-package com.jezh.jdbc.golovach.dao;
+package com.jezh.jdbc.golovach.jdbc;
 
 import com.jezh.jdbc.golovach.jdbc.ConnectionFactory;
 import com.jezh.jdbc.golovach.jdbc.impl.ConnectionFactoryC3P0;

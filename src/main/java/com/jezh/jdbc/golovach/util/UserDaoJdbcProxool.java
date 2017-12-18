@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import static com.jezh.jdbc.golovach.config.GolovachConfig.*;
-import static com.jezh.jdbc.golovach.daoImpl.JdbcClassicProbe.*;
 
 public class UserDaoJdbcProxool {
 

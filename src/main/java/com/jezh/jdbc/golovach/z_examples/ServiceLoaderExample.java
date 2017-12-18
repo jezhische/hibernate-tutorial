@@ -1,4 +1,4 @@
-package com.jezh.jdbc.golovach.util;
+package com.jezh.jdbc.golovach.z_examples;
 
 import java.sql.Driver;
 import java.util.Iterator;
@@ -8,7 +8,7 @@ public class ServiceLoaderExample {
     public static void main(String[] args) {
         ServiceLoader<Driver> loader = ServiceLoader.load(Driver.class); // Driver - это интерфейс. По этому интерфейсу
         // загрузчик сам находит те классы драйверов, которые в данный момент лежат у меня в либах, и загружает их.
-        // Поскольку ServiceLoader<S> implements Iterable<S>, то можно воспаользоваться стандартным for или итератором:
+        // Поскольку ServiceLoader<S> implements Iterable<S>, то можно воспользоваться стандартным for или итератором:
 
 //        for (Driver aLoader : loader) System.out.println(aLoader); // или:
         Iterator<Driver> iterator = loader.iterator();
