@@ -1,0 +1,1 @@
+alter table hb_student_tracker.student auto_increment=500;

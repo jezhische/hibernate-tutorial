@@ -1,0 +1,1 @@
+update hb_student_tracker.dataentity set tname='second' where id=6;

@@ -1,4 +1,4 @@
-package com.jezh.hibernate;
+package com.jezh.hibernate.mainDemo;
 
 import com.jezh.hibernate.entity.Student;
 import org.apache.commons.logging.Log;
@@ -10,13 +10,13 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class CreateStudentDemo {
+public class A_CreateStudentDemo {
 
-    private static final Log log = LogFactory.getLog(CreateStudentDemo.class);
+    private static final Log log = LogFactory.getLog(A_CreateStudentDemo.class);
 
     public static void main(String[] args) {
 
-        Logger logger = LogManager.getLogger(); // to initialize logger - в общем, не требуется
+        Logger logger = LogManager.getLogger(); // to initialize logger log4j2 - в общем, не требуется
 
         try {
             SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(Student.class)
@@ -35,15 +35,21 @@ public class CreateStudentDemo {
             }
 
             try {
-                System.out.println("**************** Creating new Student object...");
+                System.out.println("**************** Creating new Student objects...");
                 Student bobo = new Student("Bobo", "Last", "bobolast@gmail.com");
+                Student bibi = new Student("Bibi", "Last", "bibilast@gmail.com");
                 System.out.println("**************** Session begins transaction...");
                 session.beginTransaction();
                 System.out.println(">>Session is connected: " + session.isConnected());
                 System.out.println(">>Session is joined to transaction: " + session.isJoinedToTransaction());
                 System.out.println(">>Session is dirty: " + session.isDirty());
+                System.out.println("----------------------------->> Before saving in database: " + bobo);
+                System.out.println("----------------------------->> Before saving in database: " + bibi);
                 System.out.println("**************** Saving Student object...");
                 session.save(bobo);
+                session.save(bibi);
+                System.out.println("----------------------------->> After saving in database: " + bobo);
+                System.out.println("----------------------------->> After saving in database: " + bibi);
                 System.out.println(">>Session is dirty: " + session.isDirty());
                 System.out.println("**************** Session flushing...");
                 try {

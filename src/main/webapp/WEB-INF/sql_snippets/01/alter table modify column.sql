@@ -1,0 +1,1 @@
+alter table hb_student_tracker.dataentity modify column `timeStamp` datetime(3) DEFAULT CURRENT_TIMESTAMP(3);

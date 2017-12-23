@@ -20,9 +20,14 @@
 
         <!-- Echo the SQL to stdout -->
         <property name="show_sql">true</property>
+        <!--2 следующие строчки добавлены из https://stackoverflow.com/questions/2536829/hibernate-show-real-sql-->
+        <property name="format_sql">true</property>
+        <property name="use_sql_comments">true</property>
 
 		<!-- Set the current session context -->
 		<property name="current_session_context_class">thread</property>
+        
+        <property name="hbm2ddl.auto">create</property>
  
     </session-factory>
 
