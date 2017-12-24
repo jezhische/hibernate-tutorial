@@ -220,6 +220,22 @@
                     <!--<argLine>&#45;&#45;add-modules java.xml.bind</argLine>-->
                 <!--</configuration>-->
             <!--</plugin>-->
+
+            <!--http://www.javarticles.com/2015/06/generating-database-schema-using-hibernate.html-->
+            <!--for running class: com.jezh.hibernate.config.attemptToCreateDb.HibernateSchemaGenerationExample-->
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-antrun-plugin</artifactId>-->
+                <!--<version>1.8</version>-->
+                <!--<configuration>-->
+                    <!--<target>-->
+                        <!--<property name="compile_classpath" refid="maven.compile.classpath" />-->
+                        <!--<ant antfile="build.xml">-->
+                            <!--<target name="schemaexportTarget" />-->
+                        <!--</ant>-->
+                    <!--</target>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
         </plugins>
     </build>
 </project>

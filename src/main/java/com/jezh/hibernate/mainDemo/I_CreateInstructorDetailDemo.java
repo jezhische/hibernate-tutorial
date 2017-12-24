@@ -16,7 +16,7 @@ public class I_CreateInstructorDetailDemo {
     public static void main(String[] args) {
 
         try {
-            SessionFactory factory = new Configuration().configure().addAnnotatedClass(InstructorDetail.class)
+            SessionFactory factory = new Configuration().configure("hibernate01.cfg.xml").addAnnotatedClass(InstructorDetail.class)
                     .buildSessionFactory();
             Session session = factory.getCurrentSession();
             System.out.println(">>Session is open: " + session.isOpen());
