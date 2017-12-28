@@ -1,9 +1,8 @@
 package com.jezh.hibernate.entity;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -24,16 +23,34 @@ public class Instructor {
     @Column
     private String email;
 
-    @OneToOne(cascade =
-            {CascadeType.DETACH,
+    @OneToOne(cascade = CascadeType.ALL
+          /*  {CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.PERSIST,
-            CascadeType.REFRESH,
-            CascadeType.REMOVE})
+            CascadeType.REFRESH
+            *//*, CascadeType.REMOVE*//*}*/)
     @JoinColumn(name = "instructor_detail_id")
     private InstructorDetail instructorDetail;
 
+//    BI-DIRECTIONAL only
+    // mapped by field (property) instructor in the Course class
+    @OneToMany(mappedBy = "instructor",
+            cascade = {CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.REFRESH,
+                    CascadeType.PERSIST})
+    private List<Course> courses;
+
     public Instructor() {
+    }
+
+    public Instructor(String firstName, String lastName, String email, InstructorDetail instructorDetail,
+                      List<Course> courses) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.instructorDetail = instructorDetail;
+        this.courses = courses;
     }
 
     public Instructor(String firstName, String lastName, String email, InstructorDetail instructorDetail) {
@@ -47,6 +64,13 @@ public class Instructor {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+    }
+
+    public void addCourse(Course course) {
+        if (courses == null) courses = new ArrayList<>();
+        courses.add(course);
+//      todo: manifestation of bi-directional relationship:
+        course.setInstructor(this);
     }
 
     public int getId() {
@@ -85,14 +109,22 @@ public class Instructor {
         this.instructorDetail = instructorDetail;
     }
 
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
     @Override
     public String toString() {
         return "Instructor{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
+                "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", instructorDetail=" + instructorDetail +
+                ", courses=" + courses +
                 '}';
     }
 
@@ -101,29 +133,41 @@ public class Instructor {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Instructor that = (Instructor) o;
-        return
-                new EqualsBuilder()
-                        .appendSuper(super.equals(that))
-                        .append(firstName, that.firstName)
-                        .append(lastName, that.lastName)
-                        .append(email, that.email)
-                        .append(instructorDetail, that.instructorDetail)
-                        .isEquals();
-//                Objects.equals(firstName, that.firstName) &&
-//                Objects.equals(lastName, that.lastName) &&
-//                Objects.equals(email, that.email) &&
-//                Objects.equals(instructorDetail, that.instructorDetail);
+        return Objects.equals(firstName, that.firstName) &&
+                Objects.equals(lastName, that.lastName) &&
+                Objects.equals(email, that.email) &&
+                Objects.equals(instructorDetail, that.instructorDetail) &&
+                Objects.equals(courses, that.courses);
     }
 
     @Override
     public int hashCode() {
 
-        return new HashCodeBuilder()
-                .append(firstName)
-                .append(lastName)
-                .append(email)
-                .append(instructorDetail)
-                .toHashCode();
-//                Objects.hash(firstName, lastName, email, instructorDetail);
+        return Objects.hash(firstName, lastName, email, instructorDetail, courses);
     }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Instructor that = (Instructor) o;
+//        return
+//                new EqualsBuilder()
+//                        .appendSuper(super.equals(that))
+//                        .append(firstName, that.firstName)
+//                        .append(lastName, that.lastName)
+//                        .append(email, that.email)
+//                        .append(instructorDetail, that.instructorDetail)
+//                        .isEquals();
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//
+//        return new HashCodeBuilder()
+//                .append(firstName)
+//                .append(lastName)
+//                .append(email)
+//                .append(instructorDetail)
+//                .toHashCode();
+//    }
 }

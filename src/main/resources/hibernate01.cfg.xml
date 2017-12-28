@@ -18,7 +18,7 @@
         <!-- Select our SQL dialect -->
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
         <!--auto-creating tables-->
-        <property name="hbm2ddl.auto">update</property>
+        <property name="hbm2ddl.auto">validate</property>
 
         <!-- Echo the SQL to stdout -->
         <property name="show_sql">true</property>

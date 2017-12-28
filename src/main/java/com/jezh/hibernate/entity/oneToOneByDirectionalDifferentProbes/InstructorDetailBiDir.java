@@ -1,11 +1,11 @@
-package com.jezh.hibernate.entity;
+package com.jezh.hibernate.entity.oneToOneByDirectionalDifferentProbes;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "instructor_detail")
-public class InstructorDetail {
+@Table(name = "bi_instructor_detail")
+public class InstructorDetailBiDir {
 
 //    @NotNull
     @Id
@@ -13,29 +13,35 @@ public class InstructorDetail {
     @Column/*(unique = true, updatable = false)*/
     private int id;
 
-    @Column(name = "youtube_channel")
+    @Column(name = "bi_youtube_channel")
     private String youtubeChannel;
 
-    @Column
+    @Column(name = "bi_hobby")
     private String hobby;
 
-    //    TO GET BI-DIRECTIONAL RELATIONSHIP:
+//    TO GET BI-DIRECTIONAL RELATIONSHIP:
 //    todo: NB: имя поля, а не имя таблицы
-    @OneToOne(mappedBy = "instructorDetail", cascade = /*CascadeType.ALL*/ {
+    @OneToOne(mappedBy = "instructorDetailBiDir", cascade = /*CascadeType.ALL*/ {
             CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.PERSIST,
             CascadeType.REFRESH})
 //    @Column(name = "bi_instructorBiDir")
-    private Instructor instructor;
+    private InstructorBiDir instructorBiDir;
 
-
-    public InstructorDetail() {
+    public InstructorDetailBiDir() {
     }
 
-    public InstructorDetail(String youtubeChannel, String hobby) {
+
+    public InstructorDetailBiDir(String youtubeChannel, String hobby) {
         this.youtubeChannel = youtubeChannel;
         this.hobby = hobby;
+    }
+
+    public InstructorDetailBiDir(String youtubeChannel, String hobby, InstructorBiDir instructorBiDir) {
+        this.youtubeChannel = youtubeChannel;
+        this.hobby = hobby;
+        this.instructorBiDir = instructorBiDir;
     }
 
     public int getId() {
@@ -58,23 +64,21 @@ public class InstructorDetail {
         this.hobby = hobby;
     }
 
-    public Instructor getInstructor() {
-        return instructor;
+    public InstructorBiDir getInstructorBiDir() {
+        return instructorBiDir;
     }
 
-    public void setInstructor(Instructor instructor) {
-        this.instructor = instructor;
+    public void setInstructorBiDir(InstructorBiDir instructorBiDir) {
+        this.instructorBiDir = instructorBiDir;
     }
 
-// todo: если здесь вызываем instructor, получаем StackOverflowError - зацикливание вызовов. Т.е., либо здесь вызываем
-// инструктора, но в инструкторе НЕ вызываем в toString детали, либо наоборот
     @Override
     public String toString() {
-        return "InstructorDetail{" +
+        return "InstructorDetailBiDir{" +
                 "id=" + id +
                 ", youtubeChannel='" + youtubeChannel + '\'' +
                 ", hobby='" + hobby + '\'' +
-                ", instructor=" /*+ instructor*/ +
+                ", instructorBiDir=" /*+ instructorBiDir*/ +
                 '}';
     }
 
@@ -82,7 +86,7 @@ public class InstructorDetail {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        InstructorDetail that = (InstructorDetail) o;
+        InstructorDetailBiDir that = (InstructorDetailBiDir) o;
         return Objects.equals(youtubeChannel, that.youtubeChannel) &&
                 Objects.equals(hobby, that.hobby);
     }
