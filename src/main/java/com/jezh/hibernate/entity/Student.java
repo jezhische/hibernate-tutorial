@@ -1,25 +1,36 @@
 package com.jezh.hibernate.entity;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name="student")
+@Table(name = "student")
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // IDENTITY = let MySql handle the generation AUTO_INCREMENT,
     // this is most common generation strategy for MySql
-    @Column(name="id")
+    @Column(name = "id")
     private int id;
 
-    @Column(name="first_Name")
+    @Column(name = "first_Name")
     private String firstName;
 
-        @Column(name="last_Name")
+    @Column(name = "last_Name")
     private String lastName;
 
-        @Column(name="email")
+    @Column(name = "email")
     private String email;
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.REFRESH,
+                    CascadeType.PERSIST})
+    @JoinTable(name = "course_student",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id"))
+    private List<Course> courses;
 
     public Student() {
     }
@@ -68,7 +79,7 @@ public class Student {
 //                Objects.equals(email, student.email);
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Student student = (Student)o;
+        Student student = (Student) o;
         if (firstName != null ? !firstName.equals(student.firstName) : student.firstName != null) return false;
         if (lastName != null ? !lastName.equals(student.lastName) : student.lastName != null) return false;
         return email != null ? email.equals(student.email) : student.email == null;

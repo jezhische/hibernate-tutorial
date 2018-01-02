@@ -20,6 +20,7 @@ public class InstructorDetail {
     private String hobby;
 
     //    TO GET BI-DIRECTIONAL RELATIONSHIP:
+    //    замаплен на поле instructorDetail класса Instructor
 //    todo: NB: имя поля, а не имя таблицы
     @OneToOne(mappedBy = "instructorDetail", cascade = /*CascadeType.ALL*/ {
             CascadeType.DETACH,
@@ -74,7 +75,7 @@ public class InstructorDetail {
                 "id=" + id +
                 ", youtubeChannel='" + youtubeChannel + '\'' +
                 ", hobby='" + hobby + '\'' +
-                ", instructor=" /*+ instructor*/ +
+                ", instructor=" + instructor +
                 '}';
     }
 

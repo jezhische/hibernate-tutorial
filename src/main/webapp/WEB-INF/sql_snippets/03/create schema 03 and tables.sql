@@ -17,7 +17,6 @@ create table `instructor` (
 `id` int(11) not null auto_increment,
 first_name varchar(45) default null,
 last_name varchar(45) default null,
-email varchar(45) default null,
 instructor_detail_id int(11) default null,
 primary key (id),
 key fk_detail_idx (`instructor_detail_id`),
@@ -37,34 +36,5 @@ key fk_instructor_idx (instructor_id),
 constraint fk_instructor foreign key(instructor_id) references instructor(id)
 on delete no action on update no action
 ) engine=innodb auto_increment=10 default charset=latin1;
-
-drop table if exists `review`;
-create table `review` (
-id int(11) not null auto_increment,
-comment varchar(256) default null,
-course_id int(11) default null,
-primary key (id),
-key fk_course_id_idx(course_id),
-constraint fk_course foreign key(course_id) references course (id)
-on delete no action on update no action
-) engine=innodb auto_increment=1 default charset=latin1;
-
-drop table if exists `course_student`;
-create table `course_student` (
-course_id int(11) not null,
-student_id int(11) not null,
-primary key(course_id, student_id),
-constraint fk_course_mtm foreign key (course_id) references course(id),
-constraint fk_student foreign key (student_id) references student(id)
-) engine=innodb auto_increment=1 default charset=latin1;
-
-drop table if exists `student`;
-create table `student` (
-id int(11) not null auto_increment,
-first_name varchar(45) DEFAULT NULL,
-  `lastName` varchar(45) DEFAULT NULL,
-  `email` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 set foreign_key_checks=1;

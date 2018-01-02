@@ -23,7 +23,8 @@ public class Instructor {
     @Column
     private String email;
 
-    @OneToOne(cascade = CascadeType.ALL
+    @OneToOne(/*fetch = FetchType.EAGER,*/
+            cascade = CascadeType.ALL
           /*  {CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.PERSIST,
@@ -32,9 +33,11 @@ public class Instructor {
     @JoinColumn(name = "instructor_detail_id")
     private InstructorDetail instructorDetail;
 
-//    BI-DIRECTIONAL only
+//    BI-DIRECTIONAL here:
     // mapped by field (property) instructor in the Course class
-    @OneToMany(mappedBy = "instructor",
+//    (замаплен на поле instructor класса Course)
+    @OneToMany(fetch = FetchType.LAZY,
+            mappedBy = "instructor",
             cascade = {CascadeType.DETACH,
                     CascadeType.MERGE,
                     CascadeType.REFRESH,
@@ -107,6 +110,7 @@ public class Instructor {
 
     public void setInstructorDetail(InstructorDetail instructorDetail) {
         this.instructorDetail = instructorDetail;
+        instructorDetail.setInstructor(this);
     }
 
     public List<Course> getCourses() {
@@ -120,11 +124,12 @@ public class Instructor {
     @Override
     public String toString() {
         return "Instructor{" +
-                "firstName='" + firstName + '\'' +
+                "id = " + id +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", instructorDetail=" + instructorDetail +
-                ", courses=" + courses +
+                ", instructorDetail=" + /*instructorDetail +*/
+                ", courses=" + /*courses +*/
                 '}';
     }
 
